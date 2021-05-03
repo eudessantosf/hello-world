@@ -3,7 +3,7 @@ Resources:
   - TargetService:
       Type: AWS::ECS::Service
       Properties:
-        TaskDefinition: "arn:aws:ecs:aws-region-id:aws-account-id::task-definition/ecs-demo-task-definition:revision-number"
+        TaskDefinition: "arn:aws:ecs:us-west-2:277339514346:task-definition/fercos-ecs-teste:1"
         LoadBalancerInfo:
           ContainerName: "ecs-fercos-container"
           ContainerPort: 80
