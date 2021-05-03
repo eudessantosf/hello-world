@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM ubuntu
 WORKDIR /usr/src/app
 EXPOSE 8000
 COPY requirements.txt .
