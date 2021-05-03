@@ -1,72 +1,9 @@
-version: 0.2
-
-env:
-  variables:
-      key_ecr: "URI_REPOSITORIO_ECR"
-      key_regiao: "REGIAO"
-      key_produto: "PRODUTO"
-      key_versao_produto: "VERSAO_PRODUTO"
-      key_artefatos: "ARTEFATOS"
-     # key: "value"
-  #parameter-store:
-     # key: "value"
-     # key: "value"
-  #secrets-manager:
-     # key: secret-id:json-key:version-stage:version-id
-     # key: secret-id:json-key:version-stage:version-id
-  #exported-variables:
-     # - variable
-     # - variable
-  #git-credential-helper: yes
-
-phases:
-  install:
-    #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.
-    #If you specify runtime-versions and use an image other than Ubuntu standard image 2.0, the build fails.
-    #runtime-versions:
-      # name: version
-      # name: version
-    commands:
-       - apt-get update
-       - pip install --upgrade pip
-       - pip install --upgrade awscli
-       - apt-get remove docker docker-engine docker.io containerd runc
-       - apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-       - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-       - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-       - apt-get update
-       - apt-get install -y docker-ce docker-ce-cli containerd.io
-  # pre_build:
-    # commands:
-     # - mkdir WEB-INF && mkdir WEB-INF/classes
-     # - command
-  build:
-    commands:
-       - aws s3 cp $ARTEFATOS . --recursive
-       - docker build --build-arg JAR_FILE=$PRODUTO-$VERSAO_PRODUTO.jar -t $PRODUTO:$VERSAO_PRODUTO .
-       - URI_ECR=$(echo $URI_REPOSITORIO_ECR | cut -d "/" -f 1)
-       - docker tag $PRODUTO:$VERSAO_PRODUTO $URI_REPOSITORIO_ECR:$PRODUTO-$VERSAO_PRODUTO
-       - aws ecr get-login-password --region $REGIAO | docker login --username AWS --password-stdin $URI_ECR
-       - docker push $URI_REPOSITORIO_ECR:$PRODUTO-$VERSAO_PRODUTO
-  #post_build:
-    #commands:
-      # - command
-      # - command
-#reports:
-  #report-name-or-arn:
-    #files:
-      # - location
-      # - location
-    #base-directory: location
-    #discard-paths: yes
-    #file-format: JunitXml | CucumberJson
-#artifacts:
-  #files:
-    # - location
-    # - location
-  #name: $(date +%Y-%m-%d)
-  #discard-paths: yes
-  #base-directory: location
-#cache:
-  #paths:
-    # - paths
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "arn:aws:ecs:aws-region-id:aws-account-id::task-definition/ecs-demo-task-definition:revision-number"
+        LoadBalancerInfo:
+          ContainerName: "ecs-fercos-container"
+          ContainerPort: 80
