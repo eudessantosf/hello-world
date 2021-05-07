@@ -1,0 +1,24 @@
+{
+    "executionRoleArn": "arn:aws:iam::account_ID:role/ecsTaskExecutionRole",
+    "containerDefinitions": [
+        {
+            "name": "ecs-fercos-container",
+            "image": "277339514346.dkr.ecr.us-west-2.amazonaws.com/fercos-ecr",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "containerPort": 80
+                }
+            ]
+        }
+    ],
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "networkMode": "awsvpc",
+    "cpu": "256",
+    "memory": "512",
+    "family": "ecs-demo"
+}
