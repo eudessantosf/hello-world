@@ -1,8 +1,7 @@
 FROM public.ecr.aws/alexaprizesharedresources/python:3.7-slim-buster
 WORKDIR /
-COPY taskdef.json .
 COPY appspec.yml .
-WORKDIR /usr/src/app
+COPY taskdef.json .
 EXPOSE 8000
 COPY requirements.txt .
 RUN pip install -qr requirements.txt
