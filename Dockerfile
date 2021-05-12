@@ -1,4 +1,4 @@
-FROM public.ecr.aws/lambda/python:3.8
+FROM public.ecr.aws/alexaprizesharedresources/python:3.7-slim-buster
 WORKDIR /
 COPY taskdef.json .
 COPY appspec.yml .
